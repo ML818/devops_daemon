@@ -16,7 +16,7 @@
 	3. Test/QA
 
 
-
+---
 
 ### AWS
 - IAM
@@ -24,15 +24,19 @@
 - Certificate Manager
 - Billing
 
-
+---
 
 ### Continuous Integration -- CI
 
 ### Continuous Delivery -- CD
 
+---
 
 ### Vagrant
 > **Virtual Machines Management Tool**
+
+
+
 
 #### Creating VM
 > 1. Create a specific directory for the VM which you want to create.
@@ -49,7 +53,6 @@
 > 4. Finished Step-3. **create** and **boot** the VM.
 `vagrant up`
 
-----
 
 #### Manage VM
 ```bash
@@ -88,5 +91,41 @@ $ vagrant ssh
 
 #
 ```
+---
  
+## KVM
 
+### Prerequisition
+[check it](https://christitus.com/vm-setup-in-linux/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+# Little Projects
+
+## Wordpress Established
+
+> Based on Ubuntu or Debian
+[reference](https://ubuntu.com/tutorials/install-and-configure-wordpress#1-overview)
