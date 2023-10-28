@@ -156,7 +156,8 @@ docker run --name <container_name> -d -p <lcoal_machine_port:container_port> <im
 # Check details about specific container
 docker inspect <container_name/container_id>
 
-
+# Delete all things which unused except local images.
+docker system prune
 
 ```
 
@@ -164,7 +165,49 @@ docker inspect <container_name/container_id>
 > Build a custom image from Dockerfile with `docker build -t <image_name> <Dockerfile_path>`
 
 
+#### Docker Compose
+> Build clusters by a YAML file.
+- All configurations in compose YAML file.
 
+##### YAML File
+> Example
+```yaml
+services:
+  app:
+    image: node:18-alpine
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: todos
+
+volumes:
+  todo-mysql-data:
+```
+
+##### Operations of Compose
+- Run: `docker compose up -d`
+- Stop: `docker compose down`
+
+
+
+---
+
+## Microservices
 
 
 
