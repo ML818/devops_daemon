@@ -100,7 +100,7 @@ $ vagrant ssh
 
 ---
 
-## Tools Online
+## Online Tools
 ### Compiler
 [Programiz](https://www.programiz.com/python-programming/online-compiler/)
 
@@ -133,8 +133,8 @@ tcpdump -i eth01 icmp and host <ip> -nn -c 10 -w ping.pcap
 [Official Website Docs Reference](https://docs.docker.com/engine/install/)
 
 Also you can check some mirror sites which would describe the installation of docker.
-[ustc-mirrors](https://mirrors.ustc.edu.cn/help/docker-ce.html) 
-[tsinghua-mirrors](https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/)
+- [ustc-mirrors](https://mirrors.ustc.edu.cn/help/docker-ce.html) 
+- [tsinghua-mirrors](https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/)
 
 #### Operations
 ```bash
@@ -162,7 +162,8 @@ docker system prune
 ```
 
 #### Dockerfile
-> Build a custom image from Dockerfile with `docker build -t <image_name> <Dockerfile_path>`
+> Build a custom image from Dockerfile with the command below.
+`docker build -t <image_name> <Dockerfile_path>`
 
 
 #### Docker Compose
