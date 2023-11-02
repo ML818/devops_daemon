@@ -32,11 +32,10 @@
 
 ---
 
+## Virtualization
+
 ### Vagrant
 > **Virtual Machines Management Tool**
-
-
-
 
 #### Creating VM
 > 1. Create a specific directory for the VM which you want to create.
@@ -52,7 +51,6 @@
 
 > 4. Finished Step-3. **create** and **boot** the VM.
 `vagrant up`
-
 
 #### Manage VM
 ```bash
@@ -92,17 +90,15 @@ $ vagrant ssh
 #
 ```
 ---
- 
-## KVM
 
-### Prerequisition
+### KVM
+#### Prerequisition
 [check it](https://christitus.com/vm-setup-in-linux/)
 
 ---
 
-## Online Tools
-### Compiler
-[Programiz](https://www.programiz.com/python-programming/online-compiler/)
+### Proxmox
+
 
 ### Json Editor
 [json editor online](https://jsoneditoronline.org/#left=local.nadupu&right=local.jagilu)
@@ -118,7 +114,13 @@ $ vagrant ssh
 #### tcpdump
 
 ```bash
-# 
+# catch network packs
+# -i -- ethernet interface
+# icmp -- protocol
+# host <ip> -- target
+# -c -- limit the number of packs
+# -nn -- don't analyze IP and port 
+# -w -- output a file with its name
 tcpdump -i eth01 icmp and host <ip> -nn -c 10 -w ping.pcap
 ```
 
