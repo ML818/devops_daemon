@@ -24,6 +24,9 @@
 - Certificate Manager
 - Billing
 
+#### Operations
+- EC2
+
 ---
 
 ### Continuous Integration -- CI
