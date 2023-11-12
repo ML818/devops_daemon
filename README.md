@@ -164,7 +164,21 @@ docker inspect <container_name/container_id>
 # Delete all things which unused except local images.
 docker system prune
 
+# Volume Operations
+## Check volumes info
+docker volume ls
+
+## Create volume
+docker volume create <volume-name>
+
+## Remove volume
+docker volume rm <volume-name>
+
+## Remove all volumes
+docker volume prune
 ```
+> **Notice** : Remove container and remove volume is **separate step**. If you use volumes in a container, remove the container will not remove the volumes at the same time.
+
 
 #### Dockerfile
 > Build a custom image from Dockerfile with the command below.
