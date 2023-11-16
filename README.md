@@ -101,7 +101,20 @@ $ vagrant ssh
 ---
 
 ### Proxmox
+> A virtual machine platform
+> It can create VMs and containers
 
+#### Templates
+##### Create Templates
+> The operation of VM and container are almost the same as each other.
+1. Remove `/etc/ssh/ssh_host_*`
+2. Clean the machine_id : `sudo truncate -s 0 /etc/machine_id`, if the host does not have this file, ignore this step.
+3. Poweroff and convert to template
+
+##### Create instances by template
+- After the instance boot, it needs to execute `sudo dpkg-reconfigure openssh-server`, refresh ssh keys.
+
+---
 
 ### Json Editor
 [json editor online](https://jsoneditoronline.org/#left=local.nadupu&right=local.jagilu)
@@ -298,6 +311,17 @@ docker run \
 
 [Reference](www.jenkins.io/doc/book/installing/docker/)
 
+### Pipeline
+> Syntax
+```pipeline
+pipeline{
+    agent{}
+    tools{}
+    environment{}
+    stages{}
+}
+
+```
 
 
 ---
