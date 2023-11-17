@@ -115,6 +115,7 @@ $ vagrant ssh
 - After the instance boot, it needs to execute `sudo dpkg-reconfigure openssh-server`, refresh ssh keys.
 
 ---
+## Some Online Tools
 
 ### Json Editor
 [json editor online](https://jsoneditoronline.org/#left=local.nadupu&right=local.jagilu)
@@ -122,6 +123,8 @@ $ vagrant ssh
 ### YAML Editor
 [YAML editor online](https://codebeautify.org/yaml-editor-online)
 
+### Shell Guide
+[ExplainShell](https://explainshell.com/)
 
 ---
 
@@ -273,24 +276,29 @@ volumes:
 > Customize the official Jenkins Docker image, by executing the following two steps:
 1. Create a `Dockerfile` with the following content:
 ``` Dockerfile
-    FROM jenkins/jenkins:2.414.3-jdk17
-    USER root
-    RUN apt-get update && apt-get install -y lsb-release
-    RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-      https://download.docker.com/linux/debian/gpg
-    RUN echo "deb [arch=$(dpkg --print-architecture) \
-      signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-      https://download.docker.com/linux/debian \
-      $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-    RUN apt-get update && apt-get install -y docker-ce-cli
-    USER jenkins
-    RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+FROM jenkins/jenkins:2.414.3-jdk17
+USER root
+RUN apt-get update && apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+    https://download.docker.com/linux/debian/gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+    https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN apt-get update && apt-get install -y docker-ce-cli
+USER jenkins
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
 ```
 
 > Build a new docker image from this Dockerfile, and assign the image a meaningful name, such as "myjenkins-blueocean:2.414.3-1":
 `docker build -t myjenkins-blueocean:2.414.3-1 .`
 
-2. Run your own `myjenkins-blueocean:2.414.3-1` image as a container in Docker using the following `docker run` command:
+2. Create a bridge network in Docker
+```bash
+docker network create jenkins
+```
+
+3. Run your own `myjenkins-blueocean:2.414.3-1` image as a container in Docker using the following `docker run` command:
 ```bash
 docker run \
   --name jenkins-blueocean \
@@ -309,19 +317,90 @@ docker run \
 
 > Then we can check jenkins page with `localhost:8080` in browser.
 
-[Reference](www.jenkins.io/doc/book/installing/docker/)
+[Reference](https://www.jenkins.io/doc/book/installing/docker/)
 
 ### Pipeline
 > Syntax
-```pipeline
+```groovy
 pipeline{
-    agent{}
-    tools{}
-    environment{}
-    stages{}
+    agent{
+        lable "<node_name>"
+        }
+    tools{
+        <key> <value>
+        }
+    environment{
+        <key> = "<value>"
+        ...
+        }
+    stages{
+        stage('<describe_operation>'){
+            steps{
+                <commands>
+                ...
+                }
+            }
+            post{
+                
+                }
+        }
 }
-
 ```
+Example of pipeline
+```groovy
+pipeline {
+	agent any
+	tools {
+		maven "MAVEN3"
+		jkd "OpenJDK17"
+	}
+	stages {
+		stage('Fetch code') {
+			steps {
+				git branch: 'main', url: 'https://github.com/hkhcoder/vprofile-project.git'
+			}
+		}
+
+		stage('Build') {
+			steps {
+				sh 'mvn install -DskipTests'
+			}
+			post {
+				success {
+					echo 'Archiving artifacts now.'
+					archiveArtifacts artifacts: '**/*.war'
+				}
+			}
+		}
+
+		stage('Unit Test') {
+			steps {
+				sh 'mvn test'
+			}
+		}
+	}
+}
+```
+---
+
+### Code Analysis
+> Sonarqube
+#### Sonarqube in Docker
+```shell
+docker run -d -p 9000:9000 --name sonar-server -v sonar-data:/var/sonar_home/sonar_data  sonarqube
+```
+- the embedded database is not good enough
+
+#### Configuration in Jenkins
+1. Install plugin **SonarQube Scanner for Jenkins**.
+    - `Dashboard` -> `Manage Jenkins` -> `Plugins`
+2. Add a authentication token in Sonar server.
+    - `My account` -> `Security` -> `Tokens`
+    - Filled Name, Type and Expires, then Generate. Remeber store it where you want.
+3. Configuration in Jenkins
+    - `Dashboard` -> `Manage Jenkins` -> `System` -> `SonarQube servers` -> `Add SonarQube` 
+    - Filled Name, Server URL and **Server authentication token**(it is none at the first).
+        - After **save** and **refresh** the page, the same way, we can choose the name of token which we created in Sonar server. 
 
 
 ---
